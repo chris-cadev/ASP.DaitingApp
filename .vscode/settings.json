@@ -1,1 +1,4 @@
-{}
+{
+  "editor.autoClosingBrackets": "always",
+  "cSpell.words": ["hmac", "HMACSHA"]
+}
