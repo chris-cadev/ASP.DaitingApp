@@ -9,4 +9,7 @@ public class AppUser
     public DateTime? Birthday { get; set; }
 
     public DateTime? DeletedAt { get; set; }
+
+    public required byte[] PasswordHash { get; set; }
+    public required byte[] PasswordSalt { get; set; }
 }
