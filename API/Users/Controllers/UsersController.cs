@@ -18,7 +18,7 @@ public class UsersController(DataContext context) : BaseApiController
         {
             return NotFound();
         }
-        var response = users.Select(u => new UserDto { Username = u.UserName }).ToList();
+        var response = users.Select(u => new UserDto { Id = u.Id, Username = u.UserName }).ToList();
         return Ok(response);
     }
 
@@ -33,6 +33,7 @@ public class UsersController(DataContext context) : BaseApiController
         }
         return Ok(new UserDto
         {
+            Id = user.Id,
             Username = user.UserName
         });
     }
