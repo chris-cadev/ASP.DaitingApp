@@ -9,20 +9,35 @@ import { map } from 'rxjs';
 export class AccountService {
   private http = inject(HttpClient);
   baseUrl = 'https://localhost:5001/api/';
-  currentUser = signal<User | null>(null);
+  private _currentUser = signal<User | null>(null);
+
+  get user() {
+    return this._currentUser();
+  }
+
+  constructor() {
+    this.loadPersistedUser();
+  }
+
+  private loadPersistedUser() {
+    const userString = localStorage.getItem('user');
+    if (!userString) return;
+    const user = JSON.parse(userString);
+    this._currentUser.set(user);
+  }
 
   login(model: any) {
     return this.http.post(`${this.baseUrl}account/login`, model).pipe(
       map((user) => {
         if (!user) return user;
         localStorage.setItem('user', JSON.stringify(user));
-        this.currentUser.set(user as User);
+        this._currentUser.set(user as User);
       })
     )
   }
 
   logout() {
     localStorage.removeItem('user');
-    this.currentUser.set(null);
+    this._currentUser.set(null);
   }
 }
