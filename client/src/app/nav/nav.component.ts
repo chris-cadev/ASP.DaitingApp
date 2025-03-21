@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AccountService } from '../_services/account.service';
+import { AccountService } from '../accounts/account.service';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 @Component({
@@ -11,20 +11,18 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
   styleUrl: './nav.component.scss'
 })
 export class NavComponent {
-  private accountService = inject(AccountService);
-  loggedIn = false;
+  accountService = inject(AccountService);
   model: any = {};
   login() {
     this.accountService.login(this.model).subscribe({
       next: response => {
         console.log(response)
-        this.loggedIn = true;
       },
       error: console.log
     });
   }
 
   logout() {
-    this.loggedIn = false;
+    this.accountService.logout();
   }
 }
