@@ -8,7 +8,7 @@ import { map } from 'rxjs';
 })
 export class AccountService {
   private http = inject(HttpClient);
-  baseUrl = 'https://localhost:5001/api/';
+  baseUrl = 'https://localhost:5001/api/account';
   private _currentUser = signal<User | null>(null);
 
   get user() {
@@ -19,6 +19,19 @@ export class AccountService {
     this.loadPersistedUser();
   }
 
+  register(model: any) {
+    return this.http.post(this.endpoint('/register'), model).pipe(this.mapToStoreUser);
+  }
+
+  login(model: any) {
+    return this.http.post(this.endpoint('/login'), model).pipe(this.mapToStoreUser);
+  }
+
+  logout() {
+    localStorage.removeItem('user');
+    this._currentUser.set(null);
+  }
+
   private loadPersistedUser() {
     const userString = localStorage.getItem('user');
     if (!userString) return;
@@ -26,18 +39,16 @@ export class AccountService {
     this._currentUser.set(user);
   }
 
-  login(model: any) {
-    return this.http.post(`${this.baseUrl}account/login`, model).pipe(
-      map((user) => {
-        if (!user) return user;
-        localStorage.setItem('user', JSON.stringify(user));
-        this._currentUser.set(user as User);
-      })
-    )
+  private storeUser = (user: any) => {
+    if (!user) return user;
+    localStorage.setItem('user', JSON.stringify(user));
+    this._currentUser.set(user);
+    return user;
   }
 
-  logout() {
-    localStorage.removeItem('user');
-    this._currentUser.set(null);
+  private mapToStoreUser = map(this.storeUser);
+
+  private endpoint(path: string) {
+    return `${this.baseUrl}${path}`;
   }
 }
