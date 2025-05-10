@@ -1,41 +1,33 @@
-using API.Data;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using API.Common.Controllers;
 using API.Users.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using API.Accounts.Interfaces;
 
 namespace API.Users.Controllers;
 
-public class UsersController(DataContext context) : BaseApiController
+public class UsersController(IUserRepository repository) : BaseApiController
 {
     [AllowAnonymous]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
     {
-        var users = await context.Users.ToListAsync();
-        if (users.Count == 0)
+        var users = await repository.GetUsersAsync();
+        if (!users.Any())
         {
             return NotFound();
         }
-        var response = users.Select(u => new UserDto { Id = u.Id, Username = u.UserName }).ToList();
-        return Ok(response);
+        return Ok(users);
     }
 
     [Authorize]
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<IEnumerable<UserDto>>> GetUser(int id)
+    [HttpGet("{username}")]
+    public async Task<ActionResult<UserDto>> GetUser(string username)
     {
-        var user = await context.Users.FindAsync(id);
-        if (user == null)
-        {
-            return NotFound();
-        }
-        return Ok(new UserDto
-        {
-            Id = user.Id,
-            Username = user.UserName
-        });
+        var user = await repository.GetUserByUsernameAsync(username);
+        if (user == null) return NotFound();
+
+        return Ok(user);
     }
 
 }

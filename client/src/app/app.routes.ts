@@ -5,6 +5,8 @@ import { MemberDetailComponent } from './members/member-detail.component';
 import { UsersListComponent } from './explore/users-list.component';
 import { MessagesComponent } from './social/messages.component';
 import { authGuard } from './accounts/auth.guard';
+import { NotFoundComponent } from './commons/error/not-found.component';
+import { ServerErrorComponent } from './commons/error/server-error.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -19,5 +21,7 @@ export const routes: Routes = [
             { path: 'social/messages', component: MessagesComponent },
         ],
     },
+    { path: 'not-found', component: NotFoundComponent },
+    { path: 'server-error', component: ServerErrorComponent },
     { path: "**", component: HomeComponent, pathMatch: 'full' },
 ];

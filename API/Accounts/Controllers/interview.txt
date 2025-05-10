@@ -1,0 +1,10 @@
+Differences and contrast between interface and type aliases in TypeScript
+Explain the use of async/await and Promises.
+asynchronous operations
+decorators in typescript
+advantages of using Go, go concepts like routines, channels, concurrency, and handling errors in go.
+Docker image and docker container, Containerization, workflow, Kubernetes
+CI/CD (Jenkins and GitHub Actions)
+Cloud Providers (AWS, Azure, GCP)
+Linux, Shell Scripting, CPU Troubleshoot, Tools in Linux to solve issues.
+main components of a Kubernetes cluster and how you would scale an application
