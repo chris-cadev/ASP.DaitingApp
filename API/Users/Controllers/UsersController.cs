@@ -8,7 +8,7 @@ namespace API.Users.Controllers;
 
 public class UsersController(IUserRepository repository) : BaseApiController
 {
-    [AllowAnonymous]
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
     {

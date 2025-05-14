@@ -2,13 +2,14 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { User } from './user.model';
 import { map } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
   private http = inject(HttpClient);
-  baseUrl = 'https://localhost:5001/api/account';
+  baseUrl = environment.apiUrl;
   private _currentUser = signal<User | null>(null);
 
   get user() {
@@ -20,11 +21,11 @@ export class AccountService {
   }
 
   register(model: any) {
-    return this.http.post(this.endpoint('/register'), model).pipe(this.mapToStoreUser);
+    return this.http.post(this.endpoint('register'), model).pipe(this.mapToStoreUser);
   }
 
   login(model: any) {
-    return this.http.post(this.endpoint('/login'), model).pipe(this.mapToStoreUser);
+    return this.http.post(this.endpoint('login'), model).pipe(this.mapToStoreUser);
   }
 
   logout() {
@@ -49,6 +50,6 @@ export class AccountService {
   private mapToStoreUser = map(this.storeUser);
 
   private endpoint(path: string) {
-    return `${this.baseUrl}${path}`;
+    return `${this.baseUrl}account/${path}`;
   }
 }
